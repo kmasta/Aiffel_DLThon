@@ -1,1 +1,1 @@
-from vanila_model import *
+from .vanila_model import *

@@ -1,0 +1,2 @@
+Test Loss: 0.4563
+Test F1 Score: 0.8885
