@@ -1,0 +1,26 @@
+pretrained_model_name: klue/roberta-base
+tokenizer_name: klue/roberta-base
+
+num_labels: 5
+max_length: 200
+
+batch_size: 32
+epochs: 3
+learning_rate: 2e-5
+weight_decay: 0.01
+warmup_ratio: 0.1
+lr_scheduler_type: linear
+gradient_clip_value: 1.0
+
+save_total_limit: 2
+eval_strategy: epoch
+save_strategy: epoch
+
+train_file: ../data/processed/clean_train.csv
+test_file: ../data/processed/clean_test.csv
+submission_file: ../data/results/klue_roberta_dailyfull.csv
+output_dir: ../ckpoints/klue_roberta
+log_dir: ../logs/klue_roberta
+
+experiment_name: klue_roberta_exp1
+use_wandb: false
