@@ -1,8 +1,8 @@
 """
 모델 사용 예시(커널에서)
 python preprocessing.py \
-  --inputs ../../data/augmented_data/rs_augmented_data.csv \
-  --output ../../data/processed/augmented/clean_rs.csv \
+  --inputs ../../data/augmented_data/spell_augmented_data.csv \
+  --output ../../data/processed/augmented/clean_spell.csv \
   --text_col augmented_conversation \
   --label_col class
 """
