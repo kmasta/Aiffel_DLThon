@@ -1,0 +1,3 @@
+[2025-05-02 03:44:42] Running experiment: kcbert_exp1
+[2025-05-02 03:47:48] Epoch 01 | Train Loss: 0.0000 | Val Loss: 0.2288 | Val Acc: 0.9209 | Val F1(Macro): 0.9090
+[2025-05-02 03:50:55] Epoch 02 | Train Loss: 0.0000 | Val Loss: 0.2148 | Val Acc: 0.9244 | Val F1(Macro): 0.9136

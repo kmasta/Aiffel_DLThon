@@ -1,0 +1,9 @@
+[2025-05-02 03:22:47] Running experiment: kcelectra_exp1
+[2025-05-02 03:32:42] Experiment complete.
+📊 Target 클래스 분포:
+0    100
+1    119
+2    135
+3    139
+4      7
+Name: target, dtype: int64
