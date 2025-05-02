@@ -16,7 +16,11 @@ save_total_limit: 2
 eval_strategy: epoch
 save_strategy: epoch
 
-train_file: ../data/processed/clean_train.csv
+train_files:
+  - path: ../data/processed/original/clean_train.csv
+    size: all
+  - path: ../data/processed/aihub/clean_sns_multiturn.csv
+    size: 5000
 test_file: ../data/processed/clean_test.csv
 submission_file: ../data/results/klue_roberta_dailyfull.csv
 output_dir: ../ckpoints/klue_roberta
