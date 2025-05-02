@@ -1,3 +1,12 @@
+"""
+모델 사용 예시(커널에서)
+python preprocessing.py \
+  --inputs ../../data/augmented_data/rs_augmented_data.csv \
+  --output ../../data/processed/augmented/clean_rs.csv \
+  --text_col augmented_conversation \
+  --label_col class
+"""
+
 import os
 import re
 import pandas as pd
@@ -18,27 +27,35 @@ def clean_text(text: str) -> str:
     text = re.sub(r"\s+", " ", text)
     return text
 
-def preprocess_and_merge(input_csv_paths, output_csv_path):
+def preprocess_and_merge(input_csv_paths, output_csv_path, text_col_name, label_col_name=None):
     dfs = []
 
     for path in input_csv_paths:
         print(f"Loading: {path}")
         df = pd.read_csv(path)
 
-        if "conversation" in df.columns:
-            raw_text_col = "conversation"
-        elif "text" in df.columns:
-            raw_text_col = "text"
-        else:
-            raise ValueError(f"{path} must contain either 'conversation' or 'text' column.")
+        if text_col_name not in df.columns:
+            raise ValueError(f"{path} does not contain the specified text column: '{text_col_name}'")
 
-        df["clean_text"] = df[raw_text_col].apply(clean_text)
+        df["clean_text"] = df[text_col_name].apply(clean_text)
 
-        if "class" in df.columns:
-            if not set(df["class"]).issubset(label_to_id.keys()):
-                raise ValueError(f"Unexpected class values in {path}: {set(df['class']) - label_to_id.keys()}")
-            df["label"] = df["class"].map(label_to_id)
+        if label_col_name:
+            if label_col_name not in df.columns:
+                raise ValueError(f"{path} does not contain the specified label column: '{label_col_name}'")
+
+            label_values = df[label_col_name]
+
+            if pd.api.types.is_integer_dtype(label_values):
+                if not set(label_values).issubset(set(label_to_id.values())):
+                    raise ValueError(f"Integer labels in {path} are out of expected range: {set(label_values) - set(label_to_id.values())}")
+                df["label"] = label_values
+            else:
+                if not set(label_values).issubset(label_to_id.keys()):
+                    raise ValueError(f"Unexpected class values in {path}: {set(label_values) - label_to_id.keys()}")
+                df["label"] = label_values.map(label_to_id)
+
             dfs.append(df[["clean_text", "label"]])
+
         else:
             dfs.append(df[["clean_text"]])
 
@@ -51,14 +68,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Preprocess and merge multiple chat CSV files")
     parser.add_argument("--inputs", type=str, nargs="+", required=True, help="Paths to input CSV files")
     parser.add_argument("--output", type=str, required=True, help="Path to output CSV file")
+    parser.add_argument("--text_col", type=str, default="conversation", help="Column name for conversation text")
+    parser.add_argument("--label_col", type=str, default="class", help="(Optional) Column name for label/class")
+
     args = parser.parse_args()
-
-    preprocess_and_merge(args.inputs, args.output)
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Preprocess and merge multiple chat CSV files")
-    parser.add_argument("--inputs", type=str, nargs="+", required=True, help="Paths to input CSV files")
-    parser.add_argument("--output", type=str, required=True, help="Path to output CSV file")
-    args = parser.parse_args()
-
-    preprocess_and_merge(args.inputs, args.output)
+    preprocess_and_merge(args.inputs, args.output, args.text_col, args.label_col)
