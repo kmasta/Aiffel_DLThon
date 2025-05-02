@@ -1,0 +1,11 @@
+[2025-05-02 03:56:47] Running experiment: klue_bert_exp1
+[2025-05-02 03:59:56] Epoch 01 | Train Loss: 0.0000 | Val Loss: 0.2274 | Val Acc: 0.9209 | Val F1(Macro): 0.9087
+[2025-05-02 04:03:08] Epoch 02 | Train Loss: 0.0000 | Val Loss: 0.2214 | Val Acc: 0.9209 | Val F1(Macro): 0.9096
+[2025-05-02 04:06:20] Epoch 03 | Train Loss: 0.0000 | Val Loss: 0.1973 | Val Acc: 0.9332 | Val F1(Macro): 0.9231
+[2025-05-02 04:07:00] Experiment complete.
+[2025-05-02 04:07:00] 📊 Target 클래스 분포:
+[2025-05-02 04:07:00] Label 0: 115
+[2025-05-02 04:07:00] Label 1: 117
+[2025-05-02 04:07:01] Label 2: 115
+[2025-05-02 04:07:01] Label 3: 147
+[2025-05-02 04:07:01] Label 4: 6

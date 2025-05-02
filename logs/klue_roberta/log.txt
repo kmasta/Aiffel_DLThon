@@ -1,0 +1,21 @@
+[2025-05-02 02:11:06] Running experiment: klue_roberta_exp1
+[2025-05-02 02:38:05] Running experiment: klue_roberta_exp1
+[2025-05-02 02:42:42] Experiment complete.
+[2025-05-02 02:46:19] Experiment complete.
+📊 Target 클래스 분포:
+0    114
+1    100
+2    111
+3    164
+4     11
+Name: target, dtype: int64[2025-05-02 07:04:39] Running experiment: klue_roberta_exp1
+[2025-05-02 07:09:28] Epoch 01 | Train Loss: 0.0000 | Val Loss: 0.1680 | Val Acc: 0.9492 | Val F1(Macro): 0.9084
+[2025-05-02 07:14:28] Epoch 02 | Train Loss: 0.0000 | Val Loss: 0.1414 | Val Acc: 0.9536 | Val F1(Macro): 0.9164
+[2025-05-02 07:19:25] Epoch 03 | Train Loss: 0.0000 | Val Loss: 0.1451 | Val Acc: 0.9570 | Val F1(Macro): 0.9224
+[2025-05-02 07:20:06] Experiment complete.
+[2025-05-02 07:20:07] 📊 Target 클래스 분포:
+[2025-05-02 07:20:07] Label 0: 104
+[2025-05-02 07:20:07] Label 1: 116
+[2025-05-02 07:20:07] Label 2: 123
+[2025-05-02 07:20:08] Label 3: 147
+[2025-05-02 07:20:08] Label 4: 10

@@ -1,0 +1,11 @@
+[2025-05-02 04:17:46] Running experiment: koelectra_exp1
+[2025-05-02 04:20:53] Epoch 01 | Train Loss: 0.0000 | Val Loss: 0.6470 | Val Acc: 0.8348 | Val F1(Macro): 0.8081
+[2025-05-02 04:24:10] Epoch 02 | Train Loss: 0.0000 | Val Loss: 0.3463 | Val Acc: 0.9077 | Val F1(Macro): 0.8938
+[2025-05-02 04:27:21] Epoch 03 | Train Loss: 0.0000 | Val Loss: 0.3017 | Val Acc: 0.9174 | Val F1(Macro): 0.9047
+[2025-05-02 04:28:01] Experiment complete.
+[2025-05-02 04:28:02] 📊 Target 클래스 분포:
+[2025-05-02 04:28:02] Label 0: 111
+[2025-05-02 04:28:02] Label 1: 121
+[2025-05-02 04:28:03] Label 2: 112
+[2025-05-02 04:28:03] Label 3: 153
+[2025-05-02 04:28:03] Label 4: 3
