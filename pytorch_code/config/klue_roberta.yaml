@@ -20,11 +20,15 @@ train_files:
   - path: ../data/processed/original/clean_train.csv
     size: all
   - path: ../data/processed/aihub/clean_sns_multiturn.csv
-    size: 5000
+    size: 10000
+  - path: ../data/processed/generated/clean_general.csv
+    size: 1000
+  - path: ../data/processed/generated/clean_bad.csv
+    size: 200
 test_file: ../data/processed/clean_test.csv
-submission_file: ../data/results/klue_roberta_dailyfull.csv
+submission_file: ../data/results/klue_ruberta_aihub10000_general1000_bad200.csv
 output_dir: ../ckpoints/klue_roberta
 log_dir: ../logs/klue_roberta
 
-experiment_name: klue_roberta_exp1
+experiment_name: klue_roberta_exp3
 use_wandb: false

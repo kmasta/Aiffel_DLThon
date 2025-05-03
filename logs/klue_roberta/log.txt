@@ -19,3 +19,32 @@ Name: target, dtype: int64[2025-05-02 07:04:39] Running experiment: klue_roberta
 [2025-05-02 07:20:07] Label 2: 123
 [2025-05-02 07:20:08] Label 3: 147
 [2025-05-02 07:20:08] Label 4: 10
+[2025-05-02 07:43:14] Running experiment: klue_roberta_exp1
+[2025-05-02 07:45:58] Epoch 01 | Train Loss: 0.0000 | Val Loss: 0.0026 | Val Acc: 1.0000 | Val F1(Macro): 1.0000
+[2025-05-02 07:48:59] Epoch 02 | Train Loss: 0.0000 | Val Loss: 0.0013 | Val Acc: 1.0000 | Val F1(Macro): 1.0000
+[2025-05-02 07:51:56] Epoch 03 | Train Loss: 0.0000 | Val Loss: 0.0010 | Val Acc: 1.0000 | Val F1(Macro): 1.0000
+[2025-05-02 07:52:39] Experiment complete.
+[2025-05-02 07:52:39] 📊 Target 클래스 분포:
+[2025-05-02 07:52:39] Label 4: 500
+[2025-05-02 07:58:20] Running experiment: klue_roberta_exp2
+[2025-05-02 08:03:40] Epoch 01 | Train Loss: 0.0000 | Val Loss: 0.1705 | Val Acc: 0.9493 | Val F1(Macro): 0.8975
+[2025-05-02 08:09:24] Epoch 02 | Train Loss: 0.0000 | Val Loss: 0.1153 | Val Acc: 0.9631 | Val F1(Macro): 0.9244
+[2025-05-02 08:14:58] Epoch 03 | Train Loss: 0.0000 | Val Loss: 0.1327 | Val Acc: 0.9616 | Val F1(Macro): 0.9219
+[2025-05-02 08:15:44] Experiment complete.
+[2025-05-02 08:15:44] 📊 Target 클래스 분포:
+[2025-05-02 08:15:44] Label 0: 95
+[2025-05-02 08:15:45] Label 1: 104
+[2025-05-02 08:15:45] Label 2: 117
+[2025-05-02 08:15:45] Label 3: 164
+[2025-05-02 08:15:45] Label 4: 20
+[2025-05-02 08:18:53] Running experiment: klue_roberta_exp3
+[2025-05-02 08:26:50] Epoch 01 | Train Loss: 0.0000 | Val Loss: 0.1035 | Val Acc: 0.9686 | Val F1(Macro): 0.9039
+[2025-05-02 08:34:56] Epoch 02 | Train Loss: 0.0000 | Val Loss: 0.0848 | Val Acc: 0.9749 | Val F1(Macro): 0.9232
+[2025-05-02 08:43:02] Epoch 03 | Train Loss: 0.0000 | Val Loss: 0.0948 | Val Acc: 0.9756 | Val F1(Macro): 0.9255
+[2025-05-02 08:43:47] Experiment complete.
+[2025-05-02 08:43:48] 📊 Target 클래스 분포:
+[2025-05-02 08:43:48] Label 0: 97
+[2025-05-02 08:43:48] Label 1: 117
+[2025-05-02 08:43:49] Label 2: 120
+[2025-05-02 08:43:49] Label 3: 155
+[2025-05-02 08:43:49] Label 4: 11
