@@ -11,8 +11,18 @@ def compute_metrics(y_true, y_pred):
 def category_metrics(y_true, y_pred):
     report = classification_report(y_true, y_pred, output_dict=True)
     metrics = {}
-    for cls, vals in report.items():
-        if cls.isdigit():
-            metrics[f'class_{cls}_accuracy'] = vals['accuracy']
-            metrics[f'class_{cls}_f1'] = vals['f1-score']
+    labels = sorted(set(y_true))
+    
+    for cls in labels:
+        cls_str = str(cls)
+        cls_indices = [i for i, y in enumerate(y_true) if y == cls]
+        y_true_cls = [y_true[i] for i in cls_indices]
+        y_pred_cls = [y_pred[i] for i in cls_indices]
+        
+        acc = accuracy_score(y_true_cls, y_pred_cls)
+        f1 = report[cls_str]['f1-score']
+        
+        metrics[f'class_{cls}_accuracy'] = acc
+        metrics[f'class_{cls}_f1'] = f1
+    
     return metrics
