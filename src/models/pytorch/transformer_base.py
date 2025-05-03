@@ -51,7 +51,6 @@ class TransformerClassifierTorch(BaseModel):
             logging_dir=os.path.join('logs', config.get('experiment_name', 'model')),
             #logging_strategy='steps',
             #logging_steps=config.get('logging_steps', 100),
-            learning_rate=float(config['lr']),
             optim      = config.get("optimizer", "adamw_torch"),           # Optimizer 종류
             optim_args = config.get("optim_args", None),               # Optimizer 초기화 인자
             learning_rate   = float(config['lr']),                # 초기 학습률
