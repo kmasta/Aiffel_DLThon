@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
-from transformers import AutoModel, AutoConfig, AutoTokenizer, AutoModelForSequenceClassification
+from transformers import AutoModel, AutoConfig, AutoTokenizer, AutoModelForSequenceClassification, EarlyStoppingCallback
 from src.models.base import BaseModel
 from src.metrics import compute_metrics
 from transformers.trainer_callback import TrainerCallback
@@ -47,12 +47,12 @@ class TransformerClassifierTorch(BaseModel):
             num_train_epochs=config['epochs'],
             per_device_train_batch_size=config['batch_size'],
             per_device_eval_batch_size=config['batch_size'],
-            eval_strategy='epoch',
+            #eval_strategy='epoch',
             logging_dir=os.path.join('logs', config.get('experiment_name', 'model')),
             #logging_strategy='steps',
             #logging_steps=config.get('logging_steps', 100),
-            optim      = config.get("optimizer", "adamw_torch"),           # Optimizer 종류
-            optim_args = config.get("optim_args", None),               # Optimizer 초기화 인자
+            #optim      = config.get("optimizer", "adamw_torch"),           # Optimizer 종류
+            #optim_args = config.get("optim_args", None),               # Optimizer 초기화 인자
             learning_rate   = float(config['lr']),                # 초기 학습률
             lr_scheduler_type = config.get("lr_scheduler_type", "linear"),  
             warmup_steps      = config.get("warmup_steps", 0),      
