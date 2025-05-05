@@ -4,13 +4,17 @@ python preprocessing.py \
   --inputs ../../data/augmented_data/spell_augmented_data.csv \
   --output ../../data/processed/augmented/clean_spell.csv \
   --text_col augmented_conversation \
-  --label_col class
+  --label_col class \
+  --spellchecking true \
+  --skip_cleaning true
+주의: skip_cleaning과 spellchecking의 default는 true
 """
 
 import os
 import re
 import pandas as pd
 import argparse
+from hanspell import spell_checker
 
 label_to_id = {
     "협박 대화": 0,
@@ -27,7 +31,16 @@ def clean_text(text: str) -> str:
     text = re.sub(r"\s+", " ", text)
     return text
 
-def preprocess_and_merge(input_csv_paths, output_csv_path, text_col_name, label_col_name=None):
+def correct_spelling(text: str) -> str:
+    try:
+        result = spell_checker.check(text.replace("\n", " "))
+        if not result.result or not result.checked.strip():
+            return text  # 결과가 없거나 빈 문자열이면 원본 반환
+        return result.checked
+    except Exception:
+        return text
+
+def preprocess_and_merge(input_csv_paths, output_csv_path, text_col_name, label_col_name=None, use_spellchecking=True, skip_cleaning=True):
     dfs = []
 
     for path in input_csv_paths:
@@ -37,7 +50,16 @@ def preprocess_and_merge(input_csv_paths, output_csv_path, text_col_name, label_
         if text_col_name not in df.columns:
             raise ValueError(f"{path} does not contain the specified text column: '{text_col_name}'")
 
-        df["clean_text"] = df[text_col_name].apply(clean_text)
+        if not skip_cleaning:
+            texts = df[text_col_name].astype(str).apply(clean_text)
+        else:
+            texts = df[text_col_name].astype(str)
+
+        if use_spellchecking:
+            print("✔ 맞춤법 검사 적용 중...")
+            texts = texts.apply(correct_spelling)
+
+        df["clean_text"] = texts
 
         if label_col_name:
             if label_col_name not in df.columns:
@@ -62,14 +84,19 @@ def preprocess_and_merge(input_csv_paths, output_csv_path, text_col_name, label_
     merged_df = pd.concat(dfs, ignore_index=True)
     os.makedirs(os.path.dirname(output_csv_path), exist_ok=True)
     merged_df.to_csv(output_csv_path, index=False)
-    print(f"Saved merged and preprocessed file to: {output_csv_path}")
+    print(f"✅ 저장 완료: {output_csv_path}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Preprocess and merge multiple chat CSV files")
     parser.add_argument("--inputs", type=str, nargs="+", required=True, help="Paths to input CSV files")
     parser.add_argument("--output", type=str, required=True, help="Path to output CSV file")
     parser.add_argument("--text_col", type=str, default="conversation", help="Column name for conversation text")
-    parser.add_argument("--label_col", type=str, default="class", help="(Optional) Column name for label/class")
+    parser.add_argument("--label_col", type=str, default=None, help="(Optional) Column name for label/class")
+    parser.add_argument("--spellchecking", type=str, default="true", help="Whether to apply spelling correction (true/false)")
+    parser.add_argument("--skip_cleaning", type=str, default="true", help="Skip text cleaning if already preprocessed (true/false)")
 
     args = parser.parse_args()
-    preprocess_and_merge(args.inputs, args.output, args.text_col, args.label_col)
+    use_spellchecking = args.spellchecking.lower() == "true"
+    skip_cleaning = args.skip_cleaning.lower() == "true"
+
+    preprocess_and_merge(args.inputs, args.output, args.text_col, args.label_col, use_spellchecking, skip_cleaning)
