@@ -1,0 +1,21 @@
+method: bayes
+metric:
+  name: val/f1
+  goal: maximize
+parameters:
+  learning_rate:
+    distribution: uniform
+    min: 0.00001
+    max: 0.0005
+  batch_size:
+    values: [16, 32, 64]
+  epochs:
+    distribution: int_uniform
+    min: 2
+    max: 10
+  dropout:
+    distribution: uniform
+    min: 0.1
+    max: 0.5
+  optimizer:
+    values: ["adam", "adamw"]

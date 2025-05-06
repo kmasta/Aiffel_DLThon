@@ -32,3 +32,5 @@ train_data_path: ["data/processed/stopwords/original/st_train.csv",
 predict_data_path: "data/processed/stopwords/st_test.csv"
 label_encoding: "int"
 seed: 42
+use_wandb: true
+wandb_project: "text-classification-final"
