@@ -21,8 +21,10 @@ def category_metrics(y_true, y_pred):
         
         acc = accuracy_score(y_true_cls, y_pred_cls)
         f1 = report[cls_str]['f1-score']
-        
+
         metrics[f'class_{cls}_accuracy'] = acc
         metrics[f'class_{cls}_f1'] = f1
+        metrics[f'class_{cls}_precision'] = report[cls_str]['precision']
+        metrics[f'class_{cls}_recall'] = report[cls_str]['recall']
     
     return metrics

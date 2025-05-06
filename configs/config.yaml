@@ -1,21 +1,34 @@
 # 실제 설정 파일
-experiment_name: "koelectra test"
+experiment_name: "klue_roberta_test"
 framework: "pytorch"
-model_name: "koelectra"
+model_name: "klue_roberta"
 num_labels: 5
-max_length: 128
+max_length: 400
 batch_size: 32
-epochs: 5
+epochs: 10
 lr: 2e-5
 val_ratio: 0.2
 test_ratio: 0.1
-save_submission: true
-use_only_eval: true
+
+warmup_ratio: 0.1
+weight_decay: 0.01
+label_smoothing: 0.1
+max_grad_norm: 1.0     # gradient clipping threshold
+hidden_dropout_prob: 0.3
+attention_probs_dropout_prob: 0.3
+
+save_submission: false
+use_only_eval: false
 optimizer: "adamw_torch"
 loss_fn: "cross_entropy"
 use_scheduler: true
 lr_scheduler_type: "linear"
-train_data_path: ["data/processed/original/clean_train.csv","data/processed/generated/clean_general.csv"]
-predict_data_path: "data/processed/clean_test.csv"
+train_data_path: ["data/processed/stopwords/original/st_train.csv",
+                  "data/processed/stopwords/generated/st_general.csv",
+                  "data/processed/stopwords/generated/st_bad.csv",
+                  "data/processed/stopwords/augmented/st_backT.csv",
+                  "data/processed/stopwords/augmented/st_ri.csv",
+                  ]
+predict_data_path: "data/processed/stopwords/st_test.csv"
 label_encoding: "int"
 seed: 42

@@ -98,8 +98,10 @@ def save_submission(preds, filename):
     submission_df.to_csv(filename, index=False)
 
 def save_test_result(test_texts, preds, test_labels, test_result_file):
-    tr_df.columns = ["text", "pred", "label"]
-    tr_df["text"] = test_texts
-    tr_df["pred"] = preds
-    tr_df["label"] = test_labels
-    tr_df.to_csv(test_result_file, index=False)
+    # DataFrame 생성
+    tr_df = pd.DataFrame({
+        "text": test_texts,
+        "pred": preds,
+        "label": test_labels
+    })
+    tr_df.to_csv(test_result_file, index=False, encoding='utf-8')
