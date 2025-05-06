@@ -134,6 +134,8 @@ if __name__ == "__main__":
     # 기존 random seed 분할이 유지 되도록 기존 코드 유지 후 fold 분할
     val_cfg = config.get("validation", {})
 
+    pool_texts = train_texts
+    pool_labels = train_labels
     if val_cfg.get("strategy") == "kfold":
         # train+val 풀 결합
         pool_texts  = train_texts + val_texts
@@ -234,7 +236,7 @@ if __name__ == "__main__":
             # Metrics & 기록
             m_val = compute_metrics(va_y, preds)
             oof_f1s.append(m_val["f1"])
-            evaluate_and_write(mode, fold_idx, "val", va_x, va_y)
+            # TODO evaluate_and_write(mode, fold_idx, "val", va_x, va_y)
 
             # 에러 샘플 저장 (각 fold의 validation에서 오분류된 샘플)
         with open(err_path, 'a', newline='', encoding='utf-8') as ef:
@@ -268,7 +270,7 @@ if __name__ == "__main__":
                 test_preds = full_model.predict(test_texts)
 
                 # fold=0로 holdout 결과 기록
-                evaluate_and_write(mode, 0, "test", test_texts, test_labels)
+                # TODO evaluate_and_write(mode, 0, "test", test_texts, test_labels)
 
                 # 오분류 샘플 저장 (풀 학습 후 holdout 테스트)
                 err_test_path = f"experiments/{exp_name}_{ts}_test_errors.csv"
@@ -300,7 +302,7 @@ if __name__ == "__main__":
                 header += [f"class_{i}_accuracy", f"class_{i}_f1", f"class_{i}_pred_count"]
             writer.writerow(header)
 
-        def evaluate_and_write(split, xs, ys=None):
+        def evaluate_and_write(mode, fold_idx, split, xs, ys=None):
             if is_ensemble:
                 preds = get_preds(
                     [m for m, *_ in sub_models],
@@ -352,8 +354,8 @@ if __name__ == "__main__":
 
         if config.get("save_submission", True):
             if not config.get("use_only_eval", False):
-                evaluate_and_write("val", val_texts, val_labels)
-            preds = evaluate_and_write("submission", predict_texts, None)
+                evaluate_and_write(mode, fold_idx,"val", val_texts, val_labels)
+            preds = evaluate_and_write(mode, fold_idx,"submission", predict_texts, None)
             sub_dir = f"submissions/{exp_name}_{ts}"
             os.makedirs(sub_dir, exist_ok=True)
             shutil.copy(args.config, sub_dir + f"{exp_name}_{ts}_config.yaml")
@@ -362,8 +364,8 @@ if __name__ == "__main__":
             logging.info(f"Submission file saved to {sub_file}")
         else:
             if not config.get("use_only_eval", False):
-                evaluate_and_write("val", val_texts, val_labels)
-            preds = evaluate_and_write("test", test_texts, test_labels)
+                evaluate_and_write(mode, fold_idx,"val", val_texts, val_labels)
+            preds = evaluate_and_write(mode, fold_idx,"test", test_texts, test_labels)
             shutil.copy(args.config, f"experiments/test_{exp_name}_{ts}_config.yaml")
             test_result_file = f"experiments/test_{exp_name}_{ts}_result.csv"
             save_test_result(test_texts, preds, test_labels, test_result_file)

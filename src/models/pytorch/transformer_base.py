@@ -1,4 +1,5 @@
 import os
+import re
 os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "1"
 import torch
 import torch.nn as nn
@@ -8,25 +9,73 @@ from src.models.base import BaseModel
 from src.metrics import compute_metrics
 from transformers.trainer_callback import TrainerCallback
 from pathlib import Path
+import torch
+import torch.nn as nn
 from torch.optim import LBFGS
+from transformers import TrainerCallback
+
+class TemperatureScaler(nn.Module):
+    def __init__(self):
+        super().__init__()
+        # log-space로 학습하는 게 안정적이므로, 실제 T = exp(log_temp)
+        self.log_temp = nn.Parameter(torch.zeros(1))
+
+    def forward(self, logits):
+        # temperature = exp(log_temp)
+        temp = torch.exp(self.log_temp)
+        return logits / temp
+
+def fit_temperature(logits, labels, device="cpu"):
+    """
+    logits: torch.Tensor, shape (N, C)
+    labels: torch.Tensor, shape (N,)
+    returns: optimal temperature scalar (float)
+    """
+    # move to device
+    logits = logits.to(device)
+    labels = labels.to(device)
+
+    scaler = TemperatureScaler().to(device)
+    nll_criterion = nn.CrossEntropyLoss()
+    optimizer = LBFGS([scaler.log_temp], lr=0.1, max_iter=50)
+
+    def _eval():
+        optimizer.zero_grad()
+        scaled_logits = scaler(logits)
+        loss = nll_criterion(scaled_logits, labels)
+        loss.backward()
+        return loss
+
+    optimizer.step(_eval)
+    return float(torch.exp(scaler.log_temp).detach().cpu())
 
 class TemperatureCallback(TrainerCallback):
-    def on_train_end(self, args, state, control, kwargs):
-        # 1) validation_logits, labels 수집
-        val_loader = self.model_args.eval_dataset
-        logits, labels = [], []
-        for batch in val_loader:
-            out = self.model(batch, output_logits=True)
-            logits.append(out.logits)
-            labels.append(batch["labels"])
-        logits = torch.cat(logits)
-        labels = torch.cat(labels)
+    def __init__(self):
+        super().__init__()
+        self.trainer = None
 
-        # 2) T 학습 (위 예시 TemperatureScaler 그대로 사용)
-        T = fit_temperature(self.model, logits, labels)
-        self.model.config.temperature = T
+    def on_train_end(self, args, state, control, **kwargs):
+        trainer = self.trainer
+        # 1) eval dataloader 얻기
+        eval_dataloader = trainer.get_eval_dataloader()
 
+        # 2) 전체 validation logits, labels 수집
+        all_logits = []
+        all_labels = []
+        trainer.model.eval()
+        with torch.no_grad():
+            for batch in eval_dataloader:
+                batch = {k: v.to(trainer.model.device) for k, v in batch.items()}
+                outputs = trainer.model(**batch)
+                all_logits.append(outputs.logits)
+                all_labels.append(batch["labels"])
+        logits = torch.cat(all_logits, dim=0)
+        labels = torch.cat(all_labels, dim=0)
 
+        # 3) 온도 학습 및 저장
+        T_opt = fit_temperature(logits, labels, device=trainer.model.device)
+        print(f"[Temperature Scaling] optimal T = {T_opt:.3f}")
+        #trainer.model.config.temperature = T_opt
 
 
 class TextDataset(Dataset):
@@ -62,7 +111,10 @@ class TransformerClassifierTorch(BaseModel):
         import os
         # Prepare datasets
         train_dataset = TextDataset(train_texts, train_labels, self.tokenizer, config['max_length'])
-        eval_dataset = TextDataset(val_texts, val_labels, self.tokenizer, config['max_length'])
+        if val_texts:
+            eval_dataset = TextDataset(val_texts, val_labels, self.tokenizer, config['max_length'])
+        else:
+            eval_dataset = None
 
         raw_name = config.get('experiment_name', 'exp_noname')
         exp_name = "".join(ch if ch.isalnum() or ch in "-_" else "_" for ch in raw_name)
@@ -99,15 +151,20 @@ class TransformerClassifierTorch(BaseModel):
         os.makedirs(args.output_dir, exist_ok=True)
         os.makedirs(args.logging_dir, exist_ok=True)
 
+        temp_cb = TemperatureCallback()
+
+
         # Initialize Trainer
         trainer = Trainer(
             model=self.model,
             args=args,
             train_dataset=train_dataset,
-            eval_dataset=eval_dataset,
+            eval_dataset=eval_dataset if eval_dataset is not None else train_dataset,
             compute_metrics=lambda p: compute_metrics(p.label_ids, p.predictions.argmax(-1)),
-            callbacks=[TemperatureCallback(), EarlyStoppingCallback(early_stopping_patience=config.get("patience", 3))]
+            callbacks=[temp_cb, EarlyStoppingCallback(early_stopping_patience=config.get("patience", 3))]
         )
+        temp_cb.trainer = trainer
+
 
         # Train the model
         trainer_output  = trainer.train()
@@ -171,11 +228,8 @@ class TransformerClassifierTorch(BaseModel):
             with torch.no_grad():
                 logits = self.model(**toks).logits
 
-        T = model.config.temperature  # calibration 콜백에서 저장된 값
-        # 2) 로짓에 온도 적용 후 softmax
-        probs = torch.softmax(logits / T, dim=-1)  # shape (N, C)
-
-        # 3) 최종 예측은 calibrated 확률의 argmax
+        T     = getattr(self.model.config, "temperature", 1.0)
+        probs = torch.softmax(logits / T, dim=-1)
         preds = torch.argmax(probs, dim=1)
 
         return preds.cpu().tolist()
@@ -230,7 +284,7 @@ class TransformerClassifierTorch(BaseModel):
                 logits = self.model(**toks).logits
 
         # softmax로 확률 분포로 변환
-        T = model.config.temperature  # calibration 콜백에서 저장된 값
+        T     = getattr(self.model.config, "temperature", 1.0)
         probs = torch.softmax(logits / T, dim=-1)
         return probs.cpu().numpy()
 
