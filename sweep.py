@@ -3,13 +3,39 @@ import wandb
 import yaml
 import argparse
 import numpy as np
-from src.utils import load_config, seed_everything, load_data, encode_labels, train_val_test_split
-from src.models.model import load_model
-from src.metrics import compute_metrics
 from datetime import datetime
 
 
+# wandb 초기화 및 설정 로드
+def init_wandb_sweep():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", default="configs/config.yaml", help="기본 설정 파일 경로")
+    parser.add_argument("--sweep_config", default="configs/sweep_config.yaml", help="sweep 설정 파일 경로")
+    parser.add_argument("--count", type=int, default=10, help="실행할 sweep 실험 횟수")
+    args = parser.parse_args()
+
+    # sweep 설정 로드
+    with open(args.sweep_config, "r", encoding="utf-8") as f:
+        sweep_config = yaml.safe_load(f)
+
+    # 기본 설정 로드
+    with open(args.config, "r", encoding="utf-8") as f:
+        base_config = yaml.safe_load(f)
+
+    project_name = base_config.get("wandb_project", "text-classification")
+
+    # sweep 초기화
+    sweep_id = wandb.sweep(sweep_config, project=project_name)
+
+    return sweep_id, args
+
+
 def train_with_wandb(config=None):
+    # 안전하게 import 하기
+    from src.utils import load_config, seed_everything, load_data, encode_labels, train_val_test_split
+    from src.models.model import load_model
+    from src.metrics import compute_metrics
+
     with wandb.init(config=config) as run:
         # wandb에서 가져온 config 적용
         wandb_config = wandb.config
@@ -67,6 +93,7 @@ def train_with_wandb(config=None):
                 val_texts, val_labels,
                 base_config
             )
+            wandb.log({"best_epoch": best_epoch})
         else:
             model.train_model(
                 train_texts, train_labels,
@@ -83,8 +110,7 @@ def train_with_wandb(config=None):
             "val/accuracy": metrics["accuracy"],
             "val/precision": metrics["precision"],
             "val/recall": metrics["recall"],
-            "val/f1": metrics["f1"],
-            "best_epoch": best_epoch if base_config['framework'].lower() == 'pytorch' else base_config["epochs"]
+            "val/f1": metrics["f1"]
         })
 
         # 테스트 데이터가 있는 경우 테스트 성능도 평가
@@ -99,34 +125,10 @@ def train_with_wandb(config=None):
                 "test/f1": test_metrics["f1"]
             })
 
-        # wandb에 최종 설정 저장
-        wandb.config.update(
-            {
-                "final_config": base_config,
-                "model_name": base_config.get("model_name", "unknown"),
-                "framework": base_config.get("framework", "unknown"),
-            },
-            allow_val_change=True
-        )
-
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--config", default="configs/config.yaml", help="기본 설정 파일 경로")
-    parser.add_argument("--sweep_config", default="configs/sweep_config.yaml", help="sweep 설정 파일 경로")
-    parser.add_argument("--count", type=int, default=10, help="실행할 sweep 실험 횟수")
-    args = parser.parse_args()
-
-    # sweep 설정 로드
-    with open(args.sweep_config, "r", encoding="utf-8") as f:
-        sweep_config = yaml.safe_load(f)
-
-    # wandb 프로젝트 설정
-    base_config = load_config(args.config)
-    project_name = base_config.get("wandb_project", "text-classification")
-
-    # sweep 초기화
-    sweep_id = wandb.sweep(sweep_config, project=project_name)
+    # wandb sweep 초기화
+    sweep_id, args = init_wandb_sweep()
 
     # sweep 실행
     wandb.agent(sweep_id, train_with_wandb, count=args.count)
