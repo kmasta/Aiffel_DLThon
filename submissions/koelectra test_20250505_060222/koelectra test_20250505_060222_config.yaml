@@ -1,0 +1,21 @@
+# 실제 설정 파일
+experiment_name: "koelectra test"
+framework: "pytorch"
+model_name: "kcelectra"
+num_labels: 5
+max_length: 128
+batch_size: 32
+epochs: 5
+lr: 2e-5
+val_ratio: 0.2
+test_ratio: 0.1
+save_submission: true
+use_only_eval: true
+optimizer: "adamw_torch"
+loss_fn: "cross_entropy"
+use_scheduler: true
+lr_scheduler_type: "linear"
+train_data_path: ["data/processed/original/clean_train.csv","data/processed/generated/clean_general.csv"]
+predict_data_path: "data/processed/clean_test.csv"
+label_encoding: "int"
+seed: 42

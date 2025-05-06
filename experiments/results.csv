@@ -1,0 +1,10 @@
+exp_name,ts,split,n_samples,loss_fn,accuracy,precision,recall,f1,class_0_accuracy,class_0_f1,class_0_pred_count,class_1_accuracy,class_1_f1,class_1_pred_count,class_2_accuracy,class_2_f1,class_2_pred_count,class_3_accuracy,class_3_f1,class_3_pred_count,class_4_accuracy,class_4_f1,class_4_pred_count
+koelectra test,20250503_195715,submission,500,cross_entropy,,,,,,,51,,,130,,,0,,,0,,,319
+koelectra test,20250505_054153,submission,500,cross_entropy,,,,,,,51,,,130,,,0,,,0,,,319
+koelectra test,20250505_055131,submission,500,cross_entropy,,,,,,,51,,,130,,,0,,,0,,,319
+koelectra test,20250505_055416,submission,500,cross_entropy,,,,,,,13,,,35,,,201,,,11,,,240
+koelectra test,20250505_055717,submission,500,cross_entropy,,,,,,,500,,,0,,,0,,,0,,,0
+koelectra test,20250505_060222,submission,500,cross_entropy,,,,,,,500,,,0,,,0,,,0,,,0
+koelectra test,20250505_060300,submission,500,cross_entropy,,,,,,,51,,,130,,,0,,,0,,,319
+koelectra test,20250505_093613,val,1138,cross_entropy,0.9059753954305799,0.8926156985888065,0.8907671295349088,0.8912255297757202,0.7932960893854749,0.8137535816618912,170,0.8877551020408163,0.8508557457212714,213,0.923469387755102,0.9402597402597402,189,0.8493150684931506,0.851258581235698,218,1.0,1.0,348
+koelectra test,20250505_093613,submission,500,cross_entropy,,,,,,,97,,,125,,,116,,,160,,,2

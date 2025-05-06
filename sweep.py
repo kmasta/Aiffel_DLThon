@@ -3,48 +3,62 @@ import wandb
 import yaml
 import argparse
 import numpy as np
-from src.utils import load_config, seed_everything, load_data, encode_labels
+from src.utils import load_config, seed_everything, load_data, encode_labels, train_val_test_split
 from src.models.model import load_model
 from src.metrics import compute_metrics
-from sklearn.model_selection import train_test_split
+from datetime import datetime
 
 
 def train_with_wandb(config=None):
-    with wandb.init(config=config):
+    with wandb.init(config=config) as run:
         # wandb에서 가져온 config 적용
-        config = wandb.config
+        wandb_config = wandb.config
 
         # 기본 설정 로드
         base_config = load_config(args.config)
 
         # wandb config에서 가져온 설정으로 base_config 업데이트
-        base_config["lr"] = config.learning_rate
-        base_config["batch_size"] = config.batch_size
-        base_config["epochs"] = config.epochs
+        base_config["lr"] = wandb_config.learning_rate
+        base_config["batch_size"] = wandb_config.batch_size
+        base_config["epochs"] = wandb_config.epochs
 
-        if hasattr(config, "dropout"):
-            base_config["hidden_dropout_prob"] = config.dropout
-            base_config["attention_probs_dropout_prob"] = config.dropout
+        if hasattr(wandb_config, "dropout"):
+            base_config["hidden_dropout_prob"] = wandb_config.dropout
+            base_config["attention_probs_dropout_prob"] = wandb_config.dropout
 
-        if hasattr(config, "optimizer"):
-            base_config["optimizer"] = config.optimizer
+        if hasattr(wandb_config, "optimizer"):
+            base_config["optimizer"] = wandb_config.optimizer
+
+        # 실험 이름 설정 (wandb run ID 포함)
+        run_id = run.id
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        base_config["experiment_name"] = f"{base_config.get('experiment_name', 'exp')}_{run_id}_{timestamp}"
 
         # 시드 고정
         seed_everything(base_config.get("seed", 42))
+
+        # 모델 로드
+        model = load_model(base_config)
 
         # 데이터 로드 및 인코딩
         texts, labels = load_data(base_config["train_data_path"])
         labels_enc = encode_labels(labels, config=base_config)
 
         # 데이터 분할
-        train_texts, val_texts, train_labels, val_labels = train_test_split(
-            texts, labels_enc,
-            test_size=base_config.get("val_ratio", 0.2),
-            random_state=base_config.get("seed", 42),
-        )
-
-        # 모델 로드
-        model = load_model(base_config)
+        if base_config.get("save_submission", True):
+            train_texts, train_labels, val_texts, val_labels, _, _ = train_val_test_split(
+                texts, labels_enc,
+                val_ratio=base_config.get("val_ratio", 0.2),
+                test_ratio=0.0,
+                seed=base_config.get("seed", 42),
+            )
+        else:
+            train_texts, train_labels, val_texts, val_labels, test_texts, test_labels = train_val_test_split(
+                texts, labels_enc,
+                val_ratio=base_config.get("val_ratio", 0.2),
+                test_ratio=base_config.get("test_ratio", 0.1),
+                seed=base_config.get("seed", 42),
+            )
 
         # 모델 훈련
         if base_config['framework'].lower() == 'pytorch':
@@ -69,8 +83,31 @@ def train_with_wandb(config=None):
             "val/accuracy": metrics["accuracy"],
             "val/precision": metrics["precision"],
             "val/recall": metrics["recall"],
-            "val/f1": metrics["f1"]
+            "val/f1": metrics["f1"],
+            "best_epoch": best_epoch if base_config['framework'].lower() == 'pytorch' else base_config["epochs"]
         })
+
+        # 테스트 데이터가 있는 경우 테스트 성능도 평가
+        if not base_config.get("save_submission", True):
+            test_preds = model.predict(test_texts)
+            test_metrics = compute_metrics(test_labels, test_preds)
+
+            wandb.log({
+                "test/accuracy": test_metrics["accuracy"],
+                "test/precision": test_metrics["precision"],
+                "test/recall": test_metrics["recall"],
+                "test/f1": test_metrics["f1"]
+            })
+
+        # wandb에 최종 설정 저장
+        wandb.config.update(
+            {
+                "final_config": base_config,
+                "model_name": base_config.get("model_name", "unknown"),
+                "framework": base_config.get("framework", "unknown"),
+            },
+            allow_val_change=True
+        )
 
 
 if __name__ == "__main__":
@@ -86,7 +123,7 @@ if __name__ == "__main__":
 
     # wandb 프로젝트 설정
     base_config = load_config(args.config)
-    project_name = base_config.get("wandb_project", "text-classification-final")
+    project_name = base_config.get("wandb_project", "text-classification")
 
     # sweep 초기화
     sweep_id = wandb.sweep(sweep_config, project=project_name)
