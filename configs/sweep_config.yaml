@@ -18,4 +18,4 @@ parameters:
     min: 0.1
     max: 0.5
   optimizer:
-    values: ["adam", "adamw"]
+    values: ["adamw_torch", "adafactor"]
