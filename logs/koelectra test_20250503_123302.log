@@ -1,0 +1,19 @@
+2025-05-03 12:33:02,586 INFO: Experiment start: koelectra test
+2025-05-03 12:33:02,586 INFO: Config: configs/config.yaml
+2025-05-03 12:33:04,100 INFO: Traceback (most recent call last):
+
+2025-05-03 12:33:04,101 INFO:   File "/workspace/userdisk/project/Aiffel_DLThon/run.py", line 110, in <module>
+    model.train_model(
+
+2025-05-03 12:33:04,101 INFO:   File "/workspace/userdisk/project/Aiffel_DLThon/src/models/pytorch/transformer_base.py", line 45, in train_model
+    args = TrainingArguments(
+
+2025-05-03 12:33:04,101 INFO: TypeError: __init__() got an unexpected keyword argument 'optim'
+
+2025-05-03 12:33:04,096 ERROR: Uncaught exception
+Traceback (most recent call last):
+  File "/workspace/userdisk/project/Aiffel_DLThon/run.py", line 110, in <module>
+    model.train_model(
+  File "/workspace/userdisk/project/Aiffel_DLThon/src/models/pytorch/transformer_base.py", line 45, in train_model
+    args = TrainingArguments(
+TypeError: __init__() got an unexpected keyword argument 'optim'

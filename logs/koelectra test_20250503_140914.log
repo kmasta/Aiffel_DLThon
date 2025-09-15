@@ -1,0 +1,38 @@
+2025-05-03 14:09:14,380 INFO: Experiment start: koelectra test
+2025-05-03 14:09:14,380 INFO: Experiment start: koelectra test
+2025-05-03 14:09:14,381 INFO: Config: configs/config.yaml
+2025-05-03 14:09:14,381 INFO: Config: configs/config.yaml
+2025-05-03 14:09:16,883 INFO: Traceback (most recent call last):
+
+2025-05-03 14:09:16,883 INFO: Traceback (most recent call last):
+
+2025-05-03 14:09:16,883 INFO:   File "/workspace/userdisk/project/Aiffel_DLThon/run.py", line 126, in <module>
+    model.train_model(
+
+2025-05-03 14:09:16,883 INFO:   File "/workspace/userdisk/project/Aiffel_DLThon/run.py", line 126, in <module>
+    model.train_model(
+
+2025-05-03 14:09:16,883 INFO:   File "/workspace/userdisk/project/Aiffel_DLThon/src/models/pytorch/transformer_base.py", line 78, in train_model
+    callbacks         = [EarlyStoppingCallback(early_stopping_patience= config.get("patience", 3))]
+
+2025-05-03 14:09:16,883 INFO:   File "/workspace/userdisk/project/Aiffel_DLThon/src/models/pytorch/transformer_base.py", line 78, in train_model
+    callbacks         = [EarlyStoppingCallback(early_stopping_patience= config.get("patience", 3))]
+
+2025-05-03 14:09:16,883 INFO: NameError: name 'EarlyStoppingCallback' is not defined
+
+2025-05-03 14:09:16,883 INFO: NameError: name 'EarlyStoppingCallback' is not defined
+
+2025-05-03 14:09:16,878 ERROR: Uncaught exception
+Traceback (most recent call last):
+  File "/workspace/userdisk/project/Aiffel_DLThon/run.py", line 126, in <module>
+    model.train_model(
+  File "/workspace/userdisk/project/Aiffel_DLThon/src/models/pytorch/transformer_base.py", line 78, in train_model
+    callbacks         = [EarlyStoppingCallback(early_stopping_patience= config.get("patience", 3))]
+NameError: name 'EarlyStoppingCallback' is not defined
+2025-05-03 14:09:16,878 ERROR: Uncaught exception
+Traceback (most recent call last):
+  File "/workspace/userdisk/project/Aiffel_DLThon/run.py", line 126, in <module>
+    model.train_model(
+  File "/workspace/userdisk/project/Aiffel_DLThon/src/models/pytorch/transformer_base.py", line 78, in train_model
+    callbacks         = [EarlyStoppingCallback(early_stopping_patience= config.get("patience", 3))]
+NameError: name 'EarlyStoppingCallback' is not defined

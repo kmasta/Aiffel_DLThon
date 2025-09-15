@@ -1,0 +1,84 @@
+2025-05-03 14:01:48,106 INFO: Experiment start: koelectra test
+2025-05-03 14:01:48,106 INFO: Experiment start: koelectra test
+2025-05-03 14:01:48,106 INFO: Config: configs/config.yaml
+2025-05-03 14:01:48,106 INFO: Config: configs/config.yaml
+2025-05-03 14:01:49,476 INFO: Traceback (most recent call last):
+
+2025-05-03 14:01:49,476 INFO: Traceback (most recent call last):
+
+2025-05-03 14:01:49,477 INFO:   File "/workspace/userdisk/project/Aiffel_DLThon/run.py", line 126, in <module>
+    model.train_model(
+
+2025-05-03 14:01:49,477 INFO:   File "/workspace/userdisk/project/Aiffel_DLThon/run.py", line 126, in <module>
+    model.train_model(
+
+2025-05-03 14:01:49,477 INFO:   File "/workspace/userdisk/project/Aiffel_DLThon/src/models/pytorch/transformer_base.py", line 45, in train_model
+    args = TrainingArguments(
+
+2025-05-03 14:01:49,477 INFO:   File "/workspace/userdisk/project/Aiffel_DLThon/src/models/pytorch/transformer_base.py", line 45, in train_model
+    args = TrainingArguments(
+
+2025-05-03 14:01:49,477 INFO:   File "<string>", line 114, in __init__
+
+2025-05-03 14:01:49,477 INFO:   File "<string>", line 114, in __init__
+
+2025-05-03 14:01:49,477 INFO:   File "/opt/conda/lib/python3.9/site-packages/transformers/training_args.py", line 1400, in __post_init__
+    and (self.device.type != "cuda")
+
+2025-05-03 14:01:49,477 INFO:   File "/opt/conda/lib/python3.9/site-packages/transformers/training_args.py", line 1400, in __post_init__
+    and (self.device.type != "cuda")
+
+2025-05-03 14:01:49,477 INFO:   File "/opt/conda/lib/python3.9/site-packages/transformers/training_args.py", line 1857, in device
+    return self._setup_devices
+
+2025-05-03 14:01:49,477 INFO:   File "/opt/conda/lib/python3.9/site-packages/transformers/training_args.py", line 1857, in device
+    return self._setup_devices
+
+2025-05-03 14:01:49,477 INFO:   File "/opt/conda/lib/python3.9/site-packages/transformers/utils/generic.py", line 54, in __get__
+    cached = self.fget(obj)
+
+2025-05-03 14:01:49,477 INFO:   File "/opt/conda/lib/python3.9/site-packages/transformers/utils/generic.py", line 54, in __get__
+    cached = self.fget(obj)
+
+2025-05-03 14:01:49,477 INFO:   File "/opt/conda/lib/python3.9/site-packages/transformers/training_args.py", line 1772, in _setup_devices
+    raise ImportError(
+
+2025-05-03 14:01:49,477 INFO:   File "/opt/conda/lib/python3.9/site-packages/transformers/training_args.py", line 1772, in _setup_devices
+    raise ImportError(
+
+2025-05-03 14:01:49,477 INFO: ImportError: Using the `Trainer` with `PyTorch` requires `accelerate>=0.20.1`: Please run `pip install transformers[torch]` or `pip install accelerate -U`
+
+2025-05-03 14:01:49,477 INFO: ImportError: Using the `Trainer` with `PyTorch` requires `accelerate>=0.20.1`: Please run `pip install transformers[torch]` or `pip install accelerate -U`
+
+2025-05-03 14:01:49,471 ERROR: Uncaught exception
+Traceback (most recent call last):
+  File "/workspace/userdisk/project/Aiffel_DLThon/run.py", line 126, in <module>
+    model.train_model(
+  File "/workspace/userdisk/project/Aiffel_DLThon/src/models/pytorch/transformer_base.py", line 45, in train_model
+    args = TrainingArguments(
+  File "<string>", line 114, in __init__
+  File "/opt/conda/lib/python3.9/site-packages/transformers/training_args.py", line 1400, in __post_init__
+    and (self.device.type != "cuda")
+  File "/opt/conda/lib/python3.9/site-packages/transformers/training_args.py", line 1857, in device
+    return self._setup_devices
+  File "/opt/conda/lib/python3.9/site-packages/transformers/utils/generic.py", line 54, in __get__
+    cached = self.fget(obj)
+  File "/opt/conda/lib/python3.9/site-packages/transformers/training_args.py", line 1772, in _setup_devices
+    raise ImportError(
+ImportError: Using the `Trainer` with `PyTorch` requires `accelerate>=0.20.1`: Please run `pip install transformers[torch]` or `pip install accelerate -U`
+2025-05-03 14:01:49,471 ERROR: Uncaught exception
+Traceback (most recent call last):
+  File "/workspace/userdisk/project/Aiffel_DLThon/run.py", line 126, in <module>
+    model.train_model(
+  File "/workspace/userdisk/project/Aiffel_DLThon/src/models/pytorch/transformer_base.py", line 45, in train_model
+    args = TrainingArguments(
+  File "<string>", line 114, in __init__
+  File "/opt/conda/lib/python3.9/site-packages/transformers/training_args.py", line 1400, in __post_init__
+    and (self.device.type != "cuda")
+  File "/opt/conda/lib/python3.9/site-packages/transformers/training_args.py", line 1857, in device
+    return self._setup_devices
+  File "/opt/conda/lib/python3.9/site-packages/transformers/utils/generic.py", line 54, in __get__
+    cached = self.fget(obj)
+  File "/opt/conda/lib/python3.9/site-packages/transformers/training_args.py", line 1772, in _setup_devices
+    raise ImportError(
+ImportError: Using the `Trainer` with `PyTorch` requires `accelerate>=0.20.1`: Please run `pip install transformers[torch]` or `pip install accelerate -U`

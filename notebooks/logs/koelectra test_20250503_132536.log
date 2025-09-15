@@ -1,0 +1,59 @@
+2025-05-03 13:25:36,733 INFO: Experiment start: koelectra test
+2025-05-03 13:25:36,733 INFO: Config: ../configs/config.yaml
+2025-05-03 13:25:36,759 INFO: Traceback (most recent call last):
+
+2025-05-03 13:25:36,759 INFO:   File "/workspace/userdisk/project/Aiffel_DLThon/notebooks/../run.py", line 92, in <module>
+    texts, labels = load_data(config["train_data_path"])
+
+2025-05-03 13:25:36,759 INFO:   File "/workspace/userdisk/project/Aiffel_DLThon/src/utils.py", line 33, in load_data
+    df = pd.read_csv(p)
+
+2025-05-03 13:25:36,759 INFO:   File "/opt/conda/lib/python3.9/site-packages/pandas/util/_decorators.py", line 311, in wrapper
+    return func(*args, **kwargs)
+
+2025-05-03 13:25:36,759 INFO:   File "/opt/conda/lib/python3.9/site-packages/pandas/io/parsers/readers.py", line 586, in read_csv
+    return _read(filepath_or_buffer, kwds)
+
+2025-05-03 13:25:36,759 INFO:   File "/opt/conda/lib/python3.9/site-packages/pandas/io/parsers/readers.py", line 482, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+
+2025-05-03 13:25:36,759 INFO:   File "/opt/conda/lib/python3.9/site-packages/pandas/io/parsers/readers.py", line 811, in __init__
+    self._engine = self._make_engine(self.engine)
+
+2025-05-03 13:25:36,759 INFO:   File "/opt/conda/lib/python3.9/site-packages/pandas/io/parsers/readers.py", line 1040, in _make_engine
+    return mapping[engine](self.f, **self.options)  # type: ignore[call-arg]
+
+2025-05-03 13:25:36,759 INFO:   File "/opt/conda/lib/python3.9/site-packages/pandas/io/parsers/c_parser_wrapper.py", line 51, in __init__
+    self._open_handles(src, kwds)
+
+2025-05-03 13:25:36,759 INFO:   File "/opt/conda/lib/python3.9/site-packages/pandas/io/parsers/base_parser.py", line 222, in _open_handles
+    self.handles = get_handle(
+
+2025-05-03 13:25:36,759 INFO:   File "/opt/conda/lib/python3.9/site-packages/pandas/io/common.py", line 702, in get_handle
+    handle = open(
+
+2025-05-03 13:25:36,759 INFO: FileNotFoundError: [Errno 2] No such file or directory: 'data/processed/original/clean_train.csv'
+
+2025-05-03 13:25:36,756 ERROR: Uncaught exception
+Traceback (most recent call last):
+  File "/workspace/userdisk/project/Aiffel_DLThon/notebooks/../run.py", line 92, in <module>
+    texts, labels = load_data(config["train_data_path"])
+  File "/workspace/userdisk/project/Aiffel_DLThon/src/utils.py", line 33, in load_data
+    df = pd.read_csv(p)
+  File "/opt/conda/lib/python3.9/site-packages/pandas/util/_decorators.py", line 311, in wrapper
+    return func(*args, **kwargs)
+  File "/opt/conda/lib/python3.9/site-packages/pandas/io/parsers/readers.py", line 586, in read_csv
+    return _read(filepath_or_buffer, kwds)
+  File "/opt/conda/lib/python3.9/site-packages/pandas/io/parsers/readers.py", line 482, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+  File "/opt/conda/lib/python3.9/site-packages/pandas/io/parsers/readers.py", line 811, in __init__
+    self._engine = self._make_engine(self.engine)
+  File "/opt/conda/lib/python3.9/site-packages/pandas/io/parsers/readers.py", line 1040, in _make_engine
+    return mapping[engine](self.f, **self.options)  # type: ignore[call-arg]
+  File "/opt/conda/lib/python3.9/site-packages/pandas/io/parsers/c_parser_wrapper.py", line 51, in __init__
+    self._open_handles(src, kwds)
+  File "/opt/conda/lib/python3.9/site-packages/pandas/io/parsers/base_parser.py", line 222, in _open_handles
+    self.handles = get_handle(
+  File "/opt/conda/lib/python3.9/site-packages/pandas/io/common.py", line 702, in get_handle
+    handle = open(
+FileNotFoundError: [Errno 2] No such file or directory: 'data/processed/original/clean_train.csv'

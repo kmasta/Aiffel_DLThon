@@ -1,0 +1,11 @@
+2025-05-03 11:33:33,741 INFO: Experiment start: koelectra test
+2025-05-03 11:33:33,741 INFO: Config: configs/config.yaml
+2025-05-03 11:33:38,760 INFO: [submission] num_samples=500
+2025-05-03 11:33:38,761 INFO:     class_0_pred_count=0
+2025-05-03 11:33:38,761 INFO:     class_1_pred_count=43
+2025-05-03 11:33:38,761 INFO:     class_2_pred_count=110
+2025-05-03 11:33:38,761 INFO:     class_3_pred_count=228
+2025-05-03 11:33:38,761 INFO:     class_4_pred_count=119
+2025-05-03 11:33:39,649 INFO: Submission file saved to submissions/koelectra test_20250503_113333/submission_koelectra test_20250503_113333.csv
+2025-05-03 11:33:39,816 INFO: Results recorded to experiments/results.csv
+2025-05-03 11:33:39,816 INFO: Results saved: experiments/results.csv

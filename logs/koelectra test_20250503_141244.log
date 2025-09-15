@@ -1,0 +1,58 @@
+2025-05-03 14:12:44,378 INFO: Experiment start: koelectra test
+2025-05-03 14:12:44,378 INFO: Experiment start: koelectra test
+2025-05-03 14:12:44,379 INFO: Config: configs/config.yaml
+2025-05-03 14:12:44,379 INFO: Config: configs/config.yaml
+2025-05-03 14:12:46,131 INFO: Traceback (most recent call last):
+
+2025-05-03 14:12:46,131 INFO: Traceback (most recent call last):
+
+2025-05-03 14:12:46,131 INFO:   File "/workspace/userdisk/project/Aiffel_DLThon/run.py", line 126, in <module>
+    model.train_model(
+
+2025-05-03 14:12:46,131 INFO:   File "/workspace/userdisk/project/Aiffel_DLThon/run.py", line 126, in <module>
+    model.train_model(
+
+2025-05-03 14:12:46,131 INFO:   File "/workspace/userdisk/project/Aiffel_DLThon/src/models/pytorch/transformer_base.py", line 72, in train_model
+    trainer = Trainer(
+
+2025-05-03 14:12:46,131 INFO:   File "/workspace/userdisk/project/Aiffel_DLThon/src/models/pytorch/transformer_base.py", line 72, in train_model
+    trainer = Trainer(
+
+2025-05-03 14:12:46,132 INFO:   File "/opt/conda/lib/python3.9/site-packages/transformers/trainer.py", line 340, in __init__
+    self.create_accelerator_and_postprocess()
+
+2025-05-03 14:12:46,132 INFO:   File "/opt/conda/lib/python3.9/site-packages/transformers/trainer.py", line 340, in __init__
+    self.create_accelerator_and_postprocess()
+
+2025-05-03 14:12:46,132 INFO:   File "/opt/conda/lib/python3.9/site-packages/transformers/trainer.py", line 3883, in create_accelerator_and_postprocess
+    self.accelerator = Accelerator(
+
+2025-05-03 14:12:46,132 INFO:   File "/opt/conda/lib/python3.9/site-packages/transformers/trainer.py", line 3883, in create_accelerator_and_postprocess
+    self.accelerator = Accelerator(
+
+2025-05-03 14:12:46,132 INFO: TypeError: __init__() got an unexpected keyword argument 'dispatch_batches'
+
+2025-05-03 14:12:46,132 INFO: TypeError: __init__() got an unexpected keyword argument 'dispatch_batches'
+
+2025-05-03 14:12:46,129 ERROR: Uncaught exception
+Traceback (most recent call last):
+  File "/workspace/userdisk/project/Aiffel_DLThon/run.py", line 126, in <module>
+    model.train_model(
+  File "/workspace/userdisk/project/Aiffel_DLThon/src/models/pytorch/transformer_base.py", line 72, in train_model
+    trainer = Trainer(
+  File "/opt/conda/lib/python3.9/site-packages/transformers/trainer.py", line 340, in __init__
+    self.create_accelerator_and_postprocess()
+  File "/opt/conda/lib/python3.9/site-packages/transformers/trainer.py", line 3883, in create_accelerator_and_postprocess
+    self.accelerator = Accelerator(
+TypeError: __init__() got an unexpected keyword argument 'dispatch_batches'
+2025-05-03 14:12:46,129 ERROR: Uncaught exception
+Traceback (most recent call last):
+  File "/workspace/userdisk/project/Aiffel_DLThon/run.py", line 126, in <module>
+    model.train_model(
+  File "/workspace/userdisk/project/Aiffel_DLThon/src/models/pytorch/transformer_base.py", line 72, in train_model
+    trainer = Trainer(
+  File "/opt/conda/lib/python3.9/site-packages/transformers/trainer.py", line 340, in __init__
+    self.create_accelerator_and_postprocess()
+  File "/opt/conda/lib/python3.9/site-packages/transformers/trainer.py", line 3883, in create_accelerator_and_postprocess
+    self.accelerator = Accelerator(
+TypeError: __init__() got an unexpected keyword argument 'dispatch_batches'
